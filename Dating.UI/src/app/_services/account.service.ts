@@ -3,14 +3,16 @@ import { map } from 'rxjs/operators'
 import { User } from '../_models/user';
 import { ReplaySubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl:string = 'https://localhost:7152/api/';
+  baseUrl:string = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
+  isLoggedIn:boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +23,7 @@ export class AccountService {
         if(user){
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSource.next(user);
+          this.isLoggedIn = true;
         }
       })
     )
@@ -44,5 +47,6 @@ export class AccountService {
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null!);
+    this.isLoggedIn = false;
   }
 }

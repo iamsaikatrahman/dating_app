@@ -13,21 +13,20 @@ export class AppComponent implements OnInit{
   users: any;
   constructor(private http: HttpClient, private accountService: AccountService) {}
   ngOnInit() {
-    this.getUsers();
     this.setCurrentUser();
   }
   setCurrentUser(){
-    const user: User = JSON.parse(localStorage.getItem('user') || '{}');
+    const user: User = JSON.parse(localStorage.getItem('user')!);
     this.accountService.setCurrentUser(user);
   }
-  getUsers(){
-    this.http.get('https://localhost:7152/api/Users/GetUsers').subscribe({
-      next:(response) => {
-        this.users = response;
-      },
-      error:(response) => {
-        console.log(response)
-      }
-    });
-  } 
+  // getUsers(){
+  //   this.http.get('https://localhost:7152/api/Users/GetUsers').subscribe({
+  //     next:(response) => {
+  //       this.users = response;
+  //     },
+  //     error:(response) => {
+  //       console.log(response)
+  //     }
+  //   });
+  // } 
 }
