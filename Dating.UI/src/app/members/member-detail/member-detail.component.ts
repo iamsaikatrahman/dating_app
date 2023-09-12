@@ -16,22 +16,17 @@ export class MemberDetailComponent implements OnInit{
   constructor(private memberService: MembersService, private route: ActivatedRoute) {}
   ngOnInit(): void {
     this.loadMember();
-    // this.images = this.loadImages();
   }
   loadMember(){
     this.memberService.getMember(this.route.snapshot.paramMap.get('username')!).subscribe({
       next:(response) => {
         this.member = response;
-        // const imageUrls = [];
-        // for (const photo of response.photos) {
-        //   imageUrls.push(
-        //     new ImageItem({
-        //       src: photo?.url,
-        //       thumb: photo?.url
-        //     })
-        //   );
+        setTimeout(() => {
+          this.images = response.photos.map(item => new ImageItem({src: item?.url,thumb: item?.url}));
+        }, 2000);
+        // if(response.photos != null){
+        //   this.images = response.photos.map(item => new ImageItem({src: item?.url,thumb: item?.url}));
         // }
-        this.images = response.photos.map(item => new ImageItem({src: item?.url,thumb: item?.url}));
       }
     })
   }

@@ -9,7 +9,7 @@ namespace DatingApp.API.Interfaces
         Task<bool> SaveAllAsync();
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
-        Task<AppUser> GerUserByUsernameAsync(string username);
+        Task<AppUser> GetUserByUsernameAsync(string username);
         Task<MemberDto> GetMemberAsync(string username);
         Task<IEnumerable<MemberDto>> GetMembersAsync();
     }
