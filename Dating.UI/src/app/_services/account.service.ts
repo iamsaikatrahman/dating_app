@@ -12,7 +12,7 @@ export class AccountService {
   baseUrl:string = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
-  isLoggedIn:boolean = false;
+
 
   constructor(private http: HttpClient) { }
 
@@ -21,9 +21,7 @@ export class AccountService {
       map((response: User) => {
         const user = response;
         if(user){
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
-          this.isLoggedIn = true;
+          this.setCurrentUser(user);
         }
       })
     )
@@ -33,20 +31,19 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl + 'Account/Register', model).pipe(
       map((user: User) => {
         if(user){
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       })
     )
   }
 
   setCurrentUser(user:User){
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
   logout(){
     localStorage.removeItem('user');
     this.currentUserSource.next(null!);
-    this.isLoggedIn = false;
   }
 }
